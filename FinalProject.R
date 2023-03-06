@@ -30,15 +30,15 @@ ui <- fluidPage(
         radioButtons("weather", 
                      "Choose weather type to veiw",
                            choices = unique(data$`Weather Condition`),
-                           selected = "Clear"),
+                           selected = "Clear"), ## button for selecting weather
       radioButtons("vis_button",
        "Display time of day accident occured?",
         choices = c("Yes", "No"),
-        selected = "No")
+        selected = "No") ## button for selecting time of day
       ),
     mainPanel(
-      plotOutput("weather_graph"),
-      textOutput("weatherobs")
+      plotOutput("weather_graph"), ## graph output from user input
+      textOutput("weatherobs") ## note about how many observations user is seeing
     ))
   ), 
   
@@ -71,7 +71,7 @@ weathergraph <- reactive({
   data %>% 
     filter(`Weather Condition` %in% input$weather) %>% 
     filter(`Report Year` == 2022)
-})
+})  ## weather crash graph 
 
 output$weather_graph <- renderPlot ({
   if(input$vis_button == "Yes")({
@@ -80,8 +80,8 @@ output$weather_graph <- renderPlot ({
   })else ({
     ggplot(weathergraph(), (aes (y= `Accident Type`)))+
     geom_histogram(stat = "count")
-    })
-})
+    }) 
+}) ## time of day button for weather crash graph 
 
 output$weatherobs <- renderPrint({
   data %>% 
@@ -89,7 +89,7 @@ output$weatherobs <- renderPrint({
     filter(`Report Year` == 2022) %>%  
     nrow() %>% 
     p("There were", . , "total collisions in the selected weather type.")
-})
+}) ## code for text output of how many observations user is seeing in weather crash graph
 }
 
 
