@@ -9,11 +9,22 @@ ui <- fluidPage(
     titlePanel("Info 201 Final project"),
     tabsetPanel(
       tabPanel(
-        "Introduction Page",
-        mainPanel(
-          p("this will introduce problem and dataset")
-        )
-      ),
+        "General Info",
+        h1("Railroad Accident & Incident Data"),
+        p("Safety data related to Railway Equipment Failures and Accidents"),
+        a("https://www.kaggle.com/datasets/chrico03/railroad-accident-and-incident-data"),
+        p("Dataset published by the Federal Railroad Administration, Office of Railroad Safety; contains data on railway incidents from 1975 to 2022."),
+        p("Includes data on:"),
+        tags$ul(
+          tags$li("Railway company involved"),
+          tags$li("Hazmat cars involved"),
+          tags$li("Number of people evacuated"),
+          tags$li("Number of employees on-duty")
+        ),
+        textOutput("nrow"),
+        textOutput("ncol"),
+        strong("Sample data"),
+        tags$div(style="height: 600px; overflow-x: scroll; width: 1600px; overflow-y: scroll;", tableOutput("sample_table"))),
     
   tabPanel(
     "Joe's Panel",
@@ -67,6 +78,17 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   
+  #calc the number of rows and columns and their output functions
+  nrow <- nrow(data)
+  output$nrow <- renderText(paste("The number of rows is:", nrow))
+  ncol <- ncol(data)
+  output$ncol <- renderText(paste("The number of columns is:", ncol))
+  
+  #get some data to display with output function
+  sample_data <- data[sample(nrow(data), 10), ]
+  output$sample_table <- renderTable(sample_data, options = list(scrollX = TRUE, scrollY = "300px"))  
+
+    
 weathergraph <- reactive({
   data %>% 
     filter(`Weather Condition` %in% input$weather) %>% 
