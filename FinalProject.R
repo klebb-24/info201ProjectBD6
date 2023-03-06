@@ -50,11 +50,18 @@ ui <- fluidPage(
   ), 
   
   tabPanel(
-    "Kaleb's Panel",
-    mainPanel(
-      "Kalebs's project here"
-    )
-  )
+    "Caleb's Panel - Damage Cost Analysis",
+    sidebarLayout(
+      sidebarPanel(
+        p("Observe the cost of damages on incidents."),
+        selectInput("cost_type", "Select cost type to view",
+                    choices = c("Equipment Damage Cost", "Track Damage Cost", "Total Damage Cost"),
+                    selected = "Equipment Damage Cost")
+      ),
+      mainPanel(
+        plotOutput("cost_graph")
+      )
+    )),
 ))
 
 
