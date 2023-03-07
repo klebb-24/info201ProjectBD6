@@ -9,10 +9,10 @@ ui <- fluidPage(
   titlePanel("Info 201 Final project"),
   tabsetPanel(
     tabPanel(
-      "General Info",
+      "General Info (Joe)",
       h1("Railroad Accidents and Incidents"),
       h2("Purpose"),
-      p("We will analyze railroad accident date to determine causes and impacts of railroad accidents."),
+      p("We will analyze railroad accident data to determine causes and impacts of railroad accidents."),
       img(src="https://media.npr.org/assets/img/2023/02/05/ap23035653276274-f6d38396bc1cd8b060e6801e2506f98b047f62bf-s800-c85.webp",height=400,width=400),
       p(""),
       p("How does weather affects accidents?"),#Lily
@@ -44,7 +44,7 @@ ui <- fluidPage(
     ),
     
     tabPanel(
-      "Lily's Panel - Weather and Visibility Trends",
+      "Weather and Visibility Trends (Lily)",
       sidebarLayout(
         sidebarPanel(
           p("Observe the effect on weather on incidents."),
@@ -71,7 +71,7 @@ ui <- fluidPage(
     ), 
     
     tabPanel(
-      "Caleb's Panel - Track Type and State Analysis",
+      "Track Type and State Analysis (Caleb)",
       sidebarLayout(
         sidebarPanel(
           p("Observe the cost of damages on incidents."),
@@ -85,6 +85,12 @@ ui <- fluidPage(
           textOutput("totalCount")
         )
       )),
+    tabPanel(
+      "Summary",
+      mainPanel(
+        p("summary info here")
+      )
+    ), 
   ))
 
 
