@@ -6,74 +6,76 @@ library(ggplot2)
 data <- read_delim("Rail_Equipment_Accident_Incident_Data.csv")
 
 ui <- fluidPage(
-    titlePanel("Info 201 Final project"),
-    tabsetPanel(
-      tabPanel(
-        "General Info",
-        h1("Railroad Accident & Incident Data"),
-        p("Safety data related to Railway Equipment Failures and Accidents"),
-        a("https://www.kaggle.com/datasets/chrico03/railroad-accident-and-incident-data"),
-        p("Dataset published by the Federal Railroad Administration, Office of Railroad Safety; contains data on railway incidents from 1975 to 2022."),
-        p("Includes data on:"),
-        tags$ul(
-          tags$li("Railway company involved"),
-          tags$li("Hazmat cars involved"),
-          tags$li("Number of people evacuated"),
-          tags$li("Number of employees on-duty")
-        ),
-        textOutput("nrow"),
-        textOutput("ncol"),
-        strong("Sample data"),
-        tags$div(style="height: 600px; overflow-x: scroll; width: 1600px; overflow-y: scroll;", tableOutput("sample_table"))),
+  titlePanel("Info 201 Final project"),
+  tabsetPanel(
+    tabPanel(
+      "General Info",
+      h1("Railroad Accident & Incident Data"),
+      p("Safety data related to Railway Equipment Failures and Accidents"),
+      a("https://www.kaggle.com/datasets/chrico03/railroad-accident-and-incident-data"),
+      p("Dataset published by the Federal Railroad Administration, Office of Railroad Safety; contains data on railway incidents from 1975 to 2022."),
+      p("Includes data on:"),
+      tags$ul(
+        tags$li("Railway company involved"),
+        tags$li("Hazmat cars involved"),
+        tags$li("Number of people evacuated"),
+        tags$li("Number of employees on-duty")
+      ),
+      textOutput("nrow"),
+      textOutput("ncol"),
+      strong("Sample data"),
+      tags$div(style="height: 600px; overflow-x: scroll; width: 1600px; overflow-y: scroll;", tableOutput("sample_table"))),
     
-  tabPanel(
-    "Joe's Panel",
-    mainPanel(
-      "Joe's project here"
-    )
-  ),
-  
-  tabPanel(
-    "Lily's Panel - Weather and Visibility Trends",
-    sidebarLayout(
-      sidebarPanel(
-        p("Observe the effect on weather on incidents."),
-        radioButtons("weather", 
-                     "Choose weather type to veiw",
-                           choices = unique(data$`Weather Condition`),
-                           selected = "Clear"), ## button for selecting weather
-      radioButtons("vis_button",
-       "Display time of day accident occured?",
-        choices = c("Yes", "No"),
-        selected = "No") ## button for selecting time of day
-      ),
-    mainPanel(
-      plotOutput("weather_graph"), ## graph output from user input
-      textOutput("weatherobs") ## note about how many observations user is seeing
-    ))
-  ), 
-  
-  tabPanel(
-    "Karina's Panel",
-    mainPanel(
-      "Karina's project here"
-    )
-  ), 
-  
-  tabPanel(
-    "Caleb's Panel - Damage Cost Analysis",
-    sidebarLayout(
-      sidebarPanel(
-        p("Observe the cost of damages on incidents."),
-        selectInput("cost_type", "Select cost type to view",
-                    choices = c("Equipment Damage Cost", "Track Damage Cost", "Total Damage Cost"),
-                    selected = "Equipment Damage Cost")
-      ),
+    tabPanel(
+      "Joe's Panel",
       mainPanel(
-        plotOutput("cost_graph")
+        "Joe's project here"
       )
-    )),
-))
+    ),
+    
+    tabPanel(
+      "Lily's Panel - Weather and Visibility Trends",
+      sidebarLayout(
+        sidebarPanel(
+          p("Observe the effect on weather on incidents."),
+          radioButtons("weather", 
+                       "Choose weather type to veiw",
+                       choices = unique(data$`Weather Condition`),
+                       selected = "Clear"), ## button for selecting weather
+          radioButtons("vis_button",
+                       "Display time of day accident occured?",
+                       choices = c("Yes", "No"),
+                       selected = "No") ## button for selecting time of day
+        ),
+        mainPanel(
+          plotOutput("weather_graph"), ## graph output from user input
+          textOutput("weatherobs") ## note about how many observations user is seeing
+        ))
+    ), 
+    
+    tabPanel(
+      "Karina's Panel",
+      mainPanel(
+        "Karina's project here"
+      )
+    ), 
+    
+    tabPanel(
+      "Caleb's Panel - Track Type and State Analysis",
+      sidebarLayout(
+        sidebarPanel(
+          p("Observe the cost of damages on incidents."),
+          radioButtons("cost", 
+                       "Choose which State to view",
+                       choices = unique(data$`State Name`),
+                       selected = "Clear"), ## button for selecting weather
+        ),
+        mainPanel(
+          plotOutput("cost_graph"),
+          textOutput("totalCount")
+        )
+      )),
+  ))
 
 
 server <- function(input, output) {
@@ -87,34 +89,52 @@ server <- function(input, output) {
   #get some data to display with output function
   sample_data <- data[sample(nrow(data), 10), ]
   output$sample_table <- renderTable(sample_data, options = list(scrollX = TRUE, scrollY = "300px"))  
-
-    
-weathergraph <- reactive({
-  data %>% 
-    filter(`Weather Condition` %in% input$weather) %>% 
-    filter(`Report Year` == 2022)
-})  ## weather crash graph 
-
-output$weather_graph <- renderPlot ({
-  if(input$vis_button == "Yes")({
-    ggplot(weathergraph(), (aes (y= `Accident Type`, fill = factor(Visibility))))+
-      geom_histogram(stat = "count")
-  })else ({
-    ggplot(weathergraph(), (aes (y= `Accident Type`)))+
-    geom_histogram(stat = "count")
+  
+  
+  weathergraph <- reactive({
+    data %>% 
+      filter(`Weather Condition` %in% input$weather) %>% 
+      filter(`Report Year` == 2022)
+  })  ## weather crash graph 
+  
+  output$weather_graph <- renderPlot ({
+    if(input$vis_button == "Yes")({
+      ggplot(weathergraph(), (aes (y= `Accident Type`, fill = factor(Visibility))))+
+        geom_histogram(stat = "count")
+    })else ({
+      ggplot(weathergraph(), (aes (y= `Accident Type`)))+
+        geom_histogram(stat = "count")
     }) 
-}) ## time of day button for weather crash graph 
-
-output$weatherobs <- renderPrint({
-  data %>% 
-    filter(`Weather Condition` %in% input$weather) %>% 
-    filter(`Report Year` == 2022) %>%  
-    nrow() %>% 
-    p("There were", . , "total collisions in the selected weather type.")
-}) ## code for text output of how many observations user is seeing in weather crash graph
+  }) ## time of day button for weather crash graph 
+  
+  output$weatherobs <- renderPrint({
+    data %>% 
+      filter(`Weather Condition` %in% input$weather) %>% 
+      filter(`Report Year` == 2022) %>%  
+      nrow() %>% 
+      p("There were", . , "total collisions in the selected weather type.")
+  }) ## code for text output of how many observations user is seeing in weather crash graph
+  
+  costgraph <- reactive({
+    data %>% 
+      filter(`State Name` %in% input$cost) %>% 
+      filter(`Report Year` >= 1990)
+  }) 
+  
+  output$cost_graph <- renderPlot ({
+    ggplot(costgraph(), (aes (x = `Track Type`)))+
+      geom_histogram(stat = "count")
+  })
+  
+  output$totalCount <- renderPrint({
+    data %>% 
+      filter(`State Name` %in% input$cost) %>% 
+      filter(`Report Year` >= 1990) %>%  
+      nrow() %>% 
+      paste("The cost was", . , "in this state.")
+  })
 }
 
 
 shinyApp(ui = ui, server = server)
-
 
