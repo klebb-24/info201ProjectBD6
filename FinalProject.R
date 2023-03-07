@@ -10,7 +10,16 @@ ui <- fluidPage(
   tabsetPanel(
     tabPanel(
       "General Info",
-      h1("Railroad Accident & Incident Data"),
+      h1("Railroad Accidents and Incidents"),
+      h2("Purpose"),
+      p("We will analyze railroad accident date to determine causes and impacts of railroad accidents."),
+      img(src="https://media.npr.org/assets/img/2023/02/05/ap23035653276274-f6d38396bc1cd8b060e6801e2506f98b047f62bf-s800-c85.webp",height=400,width=400),
+      p(""),
+      p("How does weather affects accidents?"),#Lily
+      p("What is the cost impact of accidents?"),#Caleb
+      p("question 3"),#Karina
+      h2("Data"),
+      h3("Railroad Accident & Incident Data"),
       p("Safety data related to Railway Equipment Failures and Accidents"),
       a("https://www.kaggle.com/datasets/chrico03/railroad-accident-and-incident-data"),
       p("Dataset published by the Federal Railroad Administration, Office of Railroad Safety; contains data on railway incidents from 1975 to 2022."),
