@@ -32,6 +32,7 @@ ui <- fluidPage(
       ),
       textOutput("nrow"),
       textOutput("ncol"),
+      p(""),
       strong("Sample data"),
       tags$div(style="height: 600px; overflow-x: scroll; width: 1600px; overflow-y: scroll;", tableOutput("sample_table"))),
     
@@ -121,7 +122,7 @@ server <- function(input, output) {
       filter(`Weather Condition` %in% input$weather) %>% 
       filter(`Report Year` == 2022) %>%  
       nrow() %>% 
-      p("There were", . , "total collisions in the selected weather type.")
+      cat("There were", . , "total collisions in the selected weather type.")
   }) ## code for text output of how many observations user is seeing in weather crash graph
   
   costgraph <- reactive({
@@ -140,7 +141,7 @@ server <- function(input, output) {
       filter(`State Name` %in% input$cost) %>% 
       filter(`Report Year` >= 1990) %>%  
       nrow() %>% 
-      paste("The cost was", . , "in this state.")
+      cat("The cost was", . , "in this state.")
   })
 }
 
