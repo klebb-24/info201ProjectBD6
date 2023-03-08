@@ -20,9 +20,9 @@ ui <- fluidPage(
       h2("Question"),
       p("Some questions we are focues on are:"),
       tags$ul(
+        tags$li("What are the leading causes of accidents?"),
         tags$li("How does weather affects accidents?"),
-        tags$li("What is the cost impact of accidents?"),
-        tags$li("question 3 ")
+        tags$li("What is the cost impact of accidents?")
       ),
       h2("Railroad Accident & Incident Data"),
       p("Safety data related to Railway Equipment Failures and Accidents"),
@@ -40,7 +40,7 @@ ui <- fluidPage(
       textOutput("ncol"),
       p(""),
       strong("Sample data"),
-      tags$div(style="height: 600px; overflow-x: scroll; width: 1600px; overflow-y: scroll;", tableOutput("sample_table")),
+      tags$div(style="height: 600px; overflow-x: scroll; width: 1200px; overflow-y: scroll;", tableOutput("sample_table")),
       h2("Creators"),
       tags$ul(
         tags$li("Karina Yang"),
@@ -51,9 +51,20 @@ ui <- fluidPage(
       ),
     
     tabPanel(
-      "Joe's Panel",
+      "Accident Causes (Joe)",
       mainPanel(
-        "Joe's project here"
+        # Sidebar with inputs
+        sidebarLayout(
+          sidebarPanel(
+            uiOutput("sortedcauses"),
+          ),
+          
+          # Main panel with output
+          mainPanel(
+            # Plot output
+            plotOutput(outputId = "line_plot", height=800,width=1400)
+          )
+        )
       )
     ),
     
@@ -121,6 +132,50 @@ server <- function(input, output) {
   sample_data <- data[sample(nrow(data), 10), ]
   output$sample_table <- renderTable(sample_data, options = list(scrollX = TRUE, scrollY = "300px"))  
   
+  choices <- data
+  choices <- choices %>%
+    mutate(year = substr(Date,nchar(Date)-3,nchar(Date))) %>%
+    group_by(year, `Accident Cause`) %>%
+    summarise(count = n()) %>%
+    group_by(`Accident Cause`) %>%
+    mutate(cum_count = cumsum(count)) %>%
+    filter(cum_count > 1000) %>%
+    arrange(`Accident Cause`)
+  sorted_choices <- choices$`Accident Cause`
+  
+  # Select input for causes to plot
+  output$sortedcauses <- renderUI({
+    selectInput("cause",
+                label = "Select Multiple Causes to plot",
+                choices = sorted_choices,
+                selected = sorted_choices[1],
+                multiple = TRUE)
+  })
+  
+  # Reactive expression for filtered data by cause
+  filtered_data <- reactive({
+    accident_cause_data <- data %>% 
+      mutate(year = substr(Date,nchar(Date)-3,nchar(Date))) %>%
+      filter(`Accident Cause` %in% input$cause) %>%
+      group_by(year, `Accident Cause`) %>%
+      summarise(count = n()) %>%
+      group_by(`Accident Cause`) %>%
+      mutate(cum_count = cumsum(count))
+  })
+  
+  # Render plot output
+  output$line_plot <- renderPlot({
+    # Plot the cumulative count by cause and year using ggplot2
+    ggplot(filtered_data(), aes(x = year, y = cum_count, color = `Accident Cause`, group=`Accident Cause`)) +
+      geom_line(aes(group=`Accident Cause`)) +
+      labs(title = "Cumulative count of accidents by cause and year",
+           x = "Year",
+           y = "Cumulative count") +
+      theme_minimal() +
+      theme(legend.position = "right",
+            legend.direction = "vertical",
+            legend.spacing.y = unit(0.5, "cm"))
+  })
   
   weathergraph <- reactive({
     data %>% 
