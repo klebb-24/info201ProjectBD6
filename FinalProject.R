@@ -1,3 +1,4 @@
+
 library(shiny)
 library(tidyverse)
 library(ggplot2)
@@ -47,7 +48,7 @@ ui <- fluidPage(
         tags$li("Lily Bates"),
         tags$li("Joe Wicorek")
       ),
-    ),
+      ),
     
     tabPanel(
       "Joe's Panel",
@@ -57,7 +58,7 @@ ui <- fluidPage(
     ),
     
     tabPanel(
-      "Weather and Visibility Trends",
+      "Weather and Visibility Trends (Lily)",
       sidebarLayout(
         sidebarPanel(
           p("Observe the effect on weather on incidents."),
@@ -68,26 +69,17 @@ ui <- fluidPage(
           radioButtons("vis_button",
                        "Display time of day accident occured?",
                        choices = c("Yes", "No"),
-                       selected = "Yes") ## button for selecting time of day
+                       selected = "No") ## button for selecting time of day
         ),
         mainPanel(
           plotOutput("weather_graph"), ## graph output from user input
-          textOutput("weatherobs"), ## note about how many observations user is seeing
-          p(" "),
-          p("This graph shows that the majority of crashes happen in clear weather
-            condtions and when it is dark and visibility is low. Overall,
-            the most common type of crash is a derailment followed by 
-            highway/railroad crossings. During clear weather, more accidents 
-            happen in the daytime compared to other weather types. Though this 
-            coorelation may be due to the high prevelance of clear weather, it may 
-            also suggest that less caution is taken in clear, high visibility
-            conditions, leading to more accidents.")
+          textOutput("weatherobs") ## note about how many observations user is seeing
         ))
     ), 
     
     
     tabPanel(
-      "Track Type and State Analysis",
+      "Track Type and State Analysis (Caleb)",
       sidebarLayout(
         sidebarPanel(
           p("Observe the cost of damages on incidents."),
@@ -102,9 +94,16 @@ ui <- fluidPage(
         )
       )),
     tabPanel(
-      "Summary",
+      "Conclusion",
       mainPanel(
-        p("summary info here")
+        img(src = "conclusion.png", height = "200px", width = "250px"),
+        p("In conclusion, one notable insight we found from the dataset is that the number of railroad accidents and incidents has been declining steadily over the past few decades, despite an increase in rail traffic. This could be attributed to improved safety regulations and advancements in technology."),
+        p("Based on the dataset provided, it seems that weather conditions such as heavy rain, snow, fog, and high winds can have a significant impact on railroad accidents and incidents. These weather conditions can lead to reduced visibility, slippery tracks, and decreased braking efficiency, which can increase
+          the risk of accidents and incidents."),
+        p("The cost impact of railroad accidents can be quite substantial, with direct costs including property damage, medical expenses, and legal fees, as well as indirect costs such as lost productivity and reputation damage."),
+        p("We believe continued investment in safety measures and technology could lead to further improvements in rail safety and a reduction in accidents and incidents."),
+        p("In terms of data quality, the dataset appears to be of reasonable quality, with a large amount of data spanning several decades. However, there may be issues with underreporting or inaccuracies in the data that could impact the results."),
+        p("To advance the project, we can analyze the impact of other factors such as train speed and maintenance practices. Additionally, incorporating data on near-miss incidents and near-collisions could provide valuable insights into potential safety risks.")
       )
     ), 
   ))
@@ -169,3 +168,4 @@ server <- function(input, output) {
 
 
 shinyApp(ui = ui, server = server)
+
