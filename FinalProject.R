@@ -9,18 +9,24 @@ ui <- fluidPage(
   titlePanel("Info 201 Final project"),
   tabsetPanel(
     tabPanel(
-      "General Info (Joe)",
-      h1("Railroad Accidents and Incidents"),
-      h2("Purpose"),
-      p("We will analyze railroad accident data to determine causes and impacts of railroad accidents."),
+      "Home",
       img(src="https://media.npr.org/assets/img/2023/02/05/ap23035653276274-f6d38396bc1cd8b060e6801e2506f98b047f62bf-s800-c85.webp",height=400,width=400),
-      p(""),
-      p("How does weather affects accidents?"),#Lily
-      p("What is the cost impact of accidents?"),#Caleb
-      p("question 3"),#Karina
-      h2("Data"),
-      h3("Railroad Accident & Incident Data"),
+      h1("Project Overview"),
+      p("The railroad industry is a crucial part of transportation infrastructure, but it is not without risk. Railroad accidents and incidents can result in significant harm to human life, the environment, and the economy. Understanding the patterns and causes of these incidents is critical for improving safety and preventing future accidents.
+        This project aims to explore the available railroad accident and incident data and use statistical analysis techniques to gain insights into the factors that influence these events."),
+      h2("Audience"),
+      p("The audience for this project may include individuals and organizations involved in the railroad industry, such as railroad companies, regulators, and safety organizations. It may also include researchers and analysts interested in transportation safety or statistical analysis of complex datasets. The insights gained from this project 
+        may be relevant to policymakers and decision-makers involved in transportation safety at the local, national, or international level."),
+      h2("Question"),
+      p("Some questions we are focues on are:"),
+      tags$ul(
+        tags$li("How does weather affects accidents?"),
+        tags$li("What is the cost impact of accidents?"),
+        tags$li("question 3 ")
+      ),
+      h2("Railroad Accident & Incident Data"),
       p("Safety data related to Railway Equipment Failures and Accidents"),
+      p("We will analyze railroad accident data to determine causes and impacts of railroad accidents."),
       a("https://www.kaggle.com/datasets/chrico03/railroad-accident-and-incident-data"),
       p("Dataset published by the Federal Railroad Administration, Office of Railroad Safety; contains data on railway incidents from 1975 to 2022."),
       p("Includes data on:"),
@@ -34,7 +40,15 @@ ui <- fluidPage(
       textOutput("ncol"),
       p(""),
       strong("Sample data"),
-      tags$div(style="height: 600px; overflow-x: scroll; width: 1600px; overflow-y: scroll;", tableOutput("sample_table"))),
+      tags$div(style="height: 600px; overflow-x: scroll; width: 1600px; overflow-y: scroll;", tableOutput("sample_table")),
+      h2("Creators"),
+      tags$ul(
+        tags$li("Karina Yang"),
+        tags$li("Caleb Lee"),
+        tags$li("Lily Bates"),
+        tags$li("Joe Wicorek")
+      ),
+      ),
     
     tabPanel(
       "Joe's Panel",
@@ -63,12 +77,6 @@ ui <- fluidPage(
         ))
     ), 
     
-    tabPanel(
-      "Karina's Panel",
-      mainPanel(
-        "Karina's project here"
-      )
-    ), 
     
     tabPanel(
       "Track Type and State Analysis (Caleb)",
