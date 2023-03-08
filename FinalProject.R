@@ -101,7 +101,9 @@ ui <- fluidPage(
         ),
         mainPanel(
           plotOutput("cost_graph"),
-          textOutput("totalCount")
+          textOutput("totalCount"),
+           p(""),
+          p("This panel allows users to explore railway incidents and accidents data. Specifically, this panel enables users to analyze the cost of damages incurred by railway incidents in different states, depending on the type of track involved. The panel includes a sidebar panel where users can select the state they want to examine, and the main panel displays a histogram that shows the distribution of incidents by track type. The output also provides a text summary of the total number of incidents and the cost of damages in the selected state. This panel is part of a larger Shiny application that allows users to explore various aspects of railway incidents and accidents data.")
         )
       )),
     tabPanel(
