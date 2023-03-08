@@ -1,4 +1,3 @@
-
 library(shiny)
 library(tidyverse)
 library(ggplot2)
@@ -48,10 +47,10 @@ ui <- fluidPage(
         tags$li("Lily Bates"),
         tags$li("Joe Wicorek")
       ),
-      ),
+    ),
     
     tabPanel(
-      "Accident Causes (Joe)",
+      "Accident Causes",
       mainPanel(
         # Sidebar with inputs
         sidebarLayout(
@@ -69,7 +68,7 @@ ui <- fluidPage(
     ),
     
     tabPanel(
-      "Weather and Visibility Trends (Lily)",
+      "Weather and Visibility Trends",
       sidebarLayout(
         sidebarPanel(
           p("Observe the effect on weather on incidents."),
@@ -90,19 +89,19 @@ ui <- fluidPage(
     
     
     tabPanel(
-      "Track Type and State Analysis (Caleb)",
+      "Track Type and State Analysis",
       sidebarLayout(
         sidebarPanel(
           p("Observe the cost of damages on incidents."),
           radioButtons("cost", 
                        "Choose which State to view",
                        choices = unique(data$`State Name`),
-                       selected = "Clear"), ## button for selecting weather
+                       selected = "Illinois"), ## button for selecting weather
         ),
         mainPanel(
           plotOutput("cost_graph"),
           textOutput("totalCount"),
-           p(""),
+          p(""),
           p("This panel allows users to explore railway incidents and accidents data. Specifically, this panel enables users to analyze the cost of damages incurred by railway incidents in different states, depending on the type of track involved. The panel includes a sidebar panel where users can select the state they want to examine, and the main panel displays a histogram that shows the distribution of incidents by track type. The output also provides a text summary of the total number of incidents and the cost of damages in the selected state. This panel is part of a larger Shiny application that allows users to explore various aspects of railway incidents and accidents data.")
         )
       )),
@@ -225,4 +224,3 @@ server <- function(input, output) {
 
 
 shinyApp(ui = ui, server = server)
-
