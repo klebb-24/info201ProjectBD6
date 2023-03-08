@@ -219,7 +219,7 @@ server <- function(input, output) {
       filter(`State Name` %in% input$cost) %>% 
       filter(`Report Year` >= 1990) %>%  
       nrow() %>% 
-      cat("The cost was", . , "in this state.")
+      cat("The cost was", . , "dollars in this state.")
   })
 }
 
