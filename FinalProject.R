@@ -108,7 +108,7 @@ ui <- fluidPage(
     tabPanel(
       "Conclusion",
       mainPanel(
-        img(src = "conclusion.png", height = "200px", width = "250px"),
+        img(src = "https://www.linkpicture.com/q/conclusion_1.jpg", height = "200px", width = "250px"),
         p("In conclusion, one notable insight we found from the dataset is that the number of railroad accidents and incidents has been declining steadily over the past few decades, despite an increase in rail traffic. This could be attributed to improved safety regulations and advancements in technology."),
         p("Based on the dataset provided, it seems that weather conditions such as heavy rain, snow, fog, and high winds can have a significant impact on railroad accidents and incidents. These weather conditions can lead to reduced visibility, slippery tracks, and decreased braking efficiency, which can increase
           the risk of accidents and incidents."),
