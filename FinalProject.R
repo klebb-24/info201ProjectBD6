@@ -79,7 +79,7 @@ ui <- fluidPage(
           radioButtons("vis_button",
                        "Display time of day accident occured?",
                        choices = c("Yes", "No"),
-                       selected = "No") ## button for selecting time of day
+                       selected = "Yes") ## button for selecting time of day
         ),
         mainPanel(
           plotOutput("weather_graph"), ## graph output from user input
@@ -105,7 +105,7 @@ ui <- fluidPage(
           radioButtons("cost", 
                        "Choose which State to view",
                        choices = unique(data$`State Name`),
-                       selected = "Illinois"), ## button for selecting weather
+                       selected = "ILLINOIS"), ## button for selecting weather
         ),
         mainPanel(
           plotOutput("cost_graph"),
