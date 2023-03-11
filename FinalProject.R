@@ -79,20 +79,11 @@ ui <- fluidPage(
           radioButtons("vis_button",
                        "Display time of day accident occured?",
                        choices = c("Yes", "No"),
-                       selected = "Yes") ## button for selecting time of day
+                       selected = "No") ## button for selecting time of day
         ),
         mainPanel(
           plotOutput("weather_graph"), ## graph output from user input
-          textOutput("weatherobs"), ## note about how many observations user is seeing
-          p(" "),
-          p("This graph shows that the majority of crashes happen in clear weather
-            condtions and when it is dark and visibility is low. Overall,
-            the most common type of crash is a derailment followed by 
-            highway/railroad crossings. During clear weather, more accidents 
-            happen in the daytime compared to other weather types. Though this 
-            coorelation may be due to the high prevelance of clear weather, it may 
-            also suggest that less caution is taken in clear, high visibility
-            conditions, leading to more accidents.")
+          textOutput("weatherobs") ## note about how many observations user is seeing
         ))
     ), 
     
@@ -102,10 +93,10 @@ ui <- fluidPage(
       sidebarLayout(
         sidebarPanel(
           p("Observe the count of accidents based on States and Track Type"),
-          radioButtons("count", 
+          radioButtons("state", 
                        "Choose which State to view",
                        choices = unique(data$`State Name`),
-                       selected = "ILLINOIS"), ## button for selecting weather
+                       selected = "Illinois"), ## button for selecting weather
         ),
         mainPanel(
           plotOutput("state_graph"),
@@ -213,7 +204,7 @@ server <- function(input, output) {
   
   stategraph <- reactive({
     data %>% 
-      filter(`State Name` %in% input$cost) %>% 
+      filter(`State Name` %in% input$state) %>% 
       filter(`Report Year` >= 1990)
   }) 
   
@@ -224,7 +215,7 @@ server <- function(input, output) {
   
   output$totalCount <- renderPrint({
     data %>% 
-      filter(`State Name` %in% input$cost) %>% 
+      filter(`State Name` %in% input$state) %>% 
       filter(`Report Year` >= 1990) %>%  
       nrow() %>% 
       cat("The count was", . , " in this state.")
