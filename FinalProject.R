@@ -61,7 +61,7 @@ ui <- fluidPage(
           # Main panel with output
           mainPanel(
             # Plot output
-            plotOutput(outputId = "line_plot", height=800,width=1400)
+            plotOutput(outputId = "line_plot", height=800,width=1600)
           )
         )
       )
@@ -142,7 +142,8 @@ server <- function(input, output) {
   sample_data <- data[sample(nrow(data), 10), ]
   output$sample_table <- renderTable(sample_data, options = list(scrollX = TRUE, scrollY = "300px"))  
   
-  choices <- data
+  choices <- data %>%
+    filter(`Report Year` >= 2000)
   choices <- choices %>%
     mutate(year = substr(Date,nchar(Date)-3,nchar(Date))) %>%
     group_by(year, `Accident Cause`) %>%
@@ -165,6 +166,7 @@ server <- function(input, output) {
   # Reactive expression for filtered data by cause
   filtered_data <- reactive({
     accident_cause_data <- data %>% 
+      filter(`Report Year` >= 2000) %>%
       mutate(year = substr(Date,nchar(Date)-3,nchar(Date))) %>%
       filter(`Accident Cause` %in% input$cause) %>%
       group_by(year, `Accident Cause`) %>%
@@ -184,7 +186,11 @@ server <- function(input, output) {
       theme_minimal() +
       theme(legend.position = "right",
             legend.direction = "vertical",
-            legend.spacing.y = unit(0.5, "cm"))
+            legend.spacing.y = unit(0.5, "cm"),
+            axis.text = element_text(size = 16),
+            axis.title = element_text(size = 18),
+            plot.title = element_text(size = 18),
+            legend.text = element_text(size = 11))
   })
   
   weathergraph <- reactive({
