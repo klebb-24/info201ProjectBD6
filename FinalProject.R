@@ -102,13 +102,13 @@ ui <- fluidPage(
       sidebarLayout(
         sidebarPanel(
           p("Observe the count of accidents based on States and Track Type"),
-          radioButtons("cost", 
+          radioButtons("state", 
                        "Choose which State to view",
                        choices = unique(data$`State Name`),
                        selected = "ILLINOIS"), ## button for selecting weather
         ),
         mainPanel(
-          plotOutput("cost_graph"),
+          plotOutput("state_graph"),
           textOutput("totalCount"),
           p(""),
           p("This panel allows users to explore railway incidents and accidents data. Specifically, this panel enables users to analyze the count of accidents incurred by railway incidents in different states, depending on the type of track involved. The panel includes a sidebar panel where users can select the state they want to examine, and the main panel displays a histogram that shows the distribution of incidents by track type. The output also provides a text summary of the total number of incidents in the selected state. This panel is part of a larger Shiny application that allows users to explore various aspects of railway incidents and accidents data.")
@@ -217,20 +217,20 @@ server <- function(input, output) {
       cat("There were", . , "total collisions in the selected weather type.")
   }) ## code for text output of how many observations user is seeing in weather crash graph
   
-  costgraph <- reactive({
+  stategraph <- reactive({
     data %>% 
-      filter(`State Name` %in% input$cost) %>% 
+      filter(`State Name` %in% input$state) %>% 
       filter(`Report Year` >= 1990)
   }) 
   
-  output$cost_graph <- renderPlot ({
-    ggplot(costgraph(), (aes (x = `Track Type`)))+
+  output$state_graph <- renderPlot ({
+    ggplot(stategraph(), (aes (x = `Track Type`)))+
       geom_histogram(stat = "count")
   })
   
   output$totalCount <- renderPrint({
     data %>% 
-      filter(`State Name` %in% input$cost) %>% 
+      filter(`State Name` %in% input$state) %>% 
       filter(`Report Year` >= 1990) %>%  
       nrow() %>% 
       cat("The count was", . , " in this state.")
