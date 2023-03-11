@@ -61,7 +61,12 @@ ui <- fluidPage(
           # Main panel with output
           mainPanel(
             # Plot output
-            plotOutput(outputId = "line_plot", height=800,width=1600)
+            plotOutput(outputId = "line_plot", height=800,width=1600),
+            p(" "),
+            p("This graph allows the exploration of accident causes. 
+            Specifically this shows the cumulative count of accidents by
+            cause. The graph shows that top 3 causes of accidents are
+            are related to switches, broken rails, and showing movemet.")
           )
         )
       )
