@@ -79,11 +79,20 @@ ui <- fluidPage(
           radioButtons("vis_button",
                        "Display time of day accident occured?",
                        choices = c("Yes", "No"),
-                       selected = "No") ## button for selecting time of day
+                       selected = "Yes") ## button for selecting time of day
         ),
         mainPanel(
           plotOutput("weather_graph"), ## graph output from user input
-          textOutput("weatherobs") ## note about how many observations user is seeing
+          textOutput("weatherobs"), ## note about how many observations user is seeing
+          p(" "),
+          p("This graph shows that the majority of crashes happen in clear weather
+            condtions and when it is dark and visibility is low. Overall,
+            the most common type of crash is a derailment followed by 
+            highway/railroad crossings. During clear weather, more accidents 
+            happen in the daytime compared to other weather types. Though this 
+            coorelation may be due to the high prevelance of clear weather, it may 
+            also suggest that less caution is taken in clear, high visibility
+            conditions, leading to more accidents.")
         ))
     ), 
     
@@ -96,7 +105,7 @@ ui <- fluidPage(
           radioButtons("state", 
                        "Choose which State to view",
                        choices = unique(data$`State Name`),
-                       selected = "Illinois"), ## button for selecting weather
+                       selected = "ILLINOIS"), ## button for selecting weather
         ),
         mainPanel(
           plotOutput("state_graph"),
